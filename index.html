@@ -1085,30 +1085,16 @@ function initBars(){
     return { device, deviceIcon, browser, browserIcon, os, osIcon };
   }
 
-  /* ── Konum tespiti — JSONP ile CORS yok ── */
-  function getGeoInfo(ip){
-    return new Promise(resolve => {
-      const empty = { city: '—', country: '—', isp: '—' };
-      if(!ip){ resolve(empty); return; }
-      const cbName = '_geo_' + Date.now();
-      const timeout = setTimeout(() => {
-        delete window[cbName];
-        resolve(empty);
-      }, 8000);
-      window[cbName] = function(d){
-        clearTimeout(timeout);
-        delete window[cbName];
-        if(d && d.status === 'success'){
-          resolve({ city: d.city||'—', country: d.country||'—', isp: d.isp||'—' });
-        } else {
-          resolve(empty);
-        }
-      };
-      const s = document.createElement('script');
-      s.onerror = () => { clearTimeout(timeout); delete window[cbName]; resolve(empty); };
-      s.src = `https://ip-api.com/json/${ip}?fields=status,city,country,isp&callback=${cbName}`;
-      document.head.appendChild(s);
-    });
+  /* ── Konum tespiti ── */
+  async function getGeoInfo(ip){
+    const empty = { city: '—', country: '—', isp: '—' };
+    if(!ip) return empty;
+    try{
+      const r = await fetch(`https://ipapi.co/${ip}/json/`);
+      const d = await r.json();
+      if(d && d.city) return { city: d.city||'—', country: d.country_name||'—', isp: d.org||'—' };
+    }catch(e){}
+    return empty;
   }
   async function getMyIP(){
     try{
@@ -1230,8 +1216,8 @@ function initBars(){
     }
 
     // Toggles
-    document.getElementById('toggle-splash').checked   = localStorage.getItem('splashDisabled') !== '1';
-    document.getElementById('toggle-darkmode').checked = localStorage.getItem('theme') !== 'light';
+    const ts = document.getElementById('toggle-splash'); if(ts) ts.checked = localStorage.getItem('splashDisabled') !== '1';
+    const td = document.getElementById('toggle-darkmode'); if(td) td.checked = localStorage.getItem('theme') !== 'light';
 
     // Panel kapalı başlar — tab'a tıklayınca açılır
   }
