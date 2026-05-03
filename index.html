@@ -401,7 +401,7 @@ footer span{color:var(--accent);}
 /* Visitor rows — grid with 4 equal columns */
 .adm-visitor-row{
   display:grid;
-  grid-template-columns:160px 1fr 1fr auto;
+  grid-template-columns:160px 1fr auto;
   align-items:center;
   font-size:11px;padding:8px 10px;
   border-bottom:1px solid var(--border);
@@ -413,7 +413,6 @@ footer span{color:var(--accent);}
 .adm-visitor-row:last-child{border-bottom:none;}
 .adm-visitor-row:hover{background:var(--bg3);}
 .adm-visitor-ip{color:var(--text);font-family:monospace;font-size:12px;}
-.adm-visitor-city{color:var(--muted);}
 .adm-visitor-device{color:var(--muted);}
 .adm-visitor-time{color:var(--faint);text-align:right;white-space:nowrap;}
 /* Expandable detail panel */
@@ -890,8 +889,7 @@ footer span{color:var(--accent);}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Şehir &amp; Cihaz
       </div>
-      <div class="adm-stat"><div class="adm-stat-label">Şehir / Ülke</div><div class="adm-stat-value" id="adm-city">—</div></div>
-      <div class="adm-stat"><div class="adm-stat-label">ISP / Ağ</div><div class="adm-stat-value" id="adm-isp" style="font-size:12px;">—</div></div>
+
       <div class="adm-icon-rows" style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
         <div class="adm-icon-row" id="adm-device-row">
           <div class="adm-icon-box" id="adm-device-icon"></div>
@@ -1085,16 +1083,9 @@ function initBars(){
     return { device, deviceIcon, browser, browserIcon, os, osIcon };
   }
 
-  /* ── Konum tespiti ── */
+  /* ── Konum tespiti — devre dışı ── */
   async function getGeoInfo(ip){
-    const empty = { city: '—', country: '—', isp: '—' };
-    if(!ip) return empty;
-    try{
-      const r = await fetch(`https://ipapi.co/${ip}/json/`);
-      const d = await r.json();
-      if(d && d.city) return { city: d.city||'—', country: d.country_name||'—', isp: d.org||'—' };
-    }catch(e){}
-    return empty;
+    return { city: '—', country: '—', isp: '—' };
   }
   async function getMyIP(){
     try{
@@ -1162,8 +1153,6 @@ function initBars(){
     document.getElementById('adm-browser-icon').innerHTML = myDev.browserIcon;
     document.getElementById('adm-os-icon').innerHTML      = myDev.osIcon;
     getGeoInfo(myIP).then(geo => {
-      document.getElementById('adm-city').textContent = geo.city + ', ' + geo.country;
-      document.getElementById('adm-isp').textContent  = geo.isp || '—';
     });
 
     // Ziyaretçileri çek
@@ -1186,20 +1175,16 @@ function initBars(){
     } else {
       // Başlık satırı
       const header = `<div class="adm-visitor-row" style="cursor:default;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);padding-bottom:4px;">
-        <span>IP Adresi</span><span>Şehir / Ülke</span><span>Cihaz · Tarayıcı</span><span style="text-align:right">Zaman</span>
+        <span>IP Adresi</span><span>Cihaz · Tarayıcı</span><span style="text-align:right">Zaman</span>
       </div>`;
       const rows = visitors.slice(0,30).map((v,i) => {
         const d = new Date(v.visited_at);
         const isAdmin = v.ip === ADMIN_IP;
-        const cityStr = (v.city && v.country) ? v.city + ', ' + v.country : '—';
         const devStr  = [v.device, v.browser].filter(Boolean).join(' · ') || '—';
         const timeStr = d.toLocaleDateString('tr-TR') + ' ' + d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
         const accentStyle = isAdmin ? 'color:var(--accent)' : '';
         const detail = `<div class="adm-visitor-detail" id="vd-${i}">
           <div class="adm-detail-item"><span class="adm-detail-label">IP</span><span class="adm-detail-value">${v.ip}</span></div>
-          <div class="adm-detail-item"><span class="adm-detail-label">Şehir</span><span class="adm-detail-value">${v.city || '—'}</span></div>
-          <div class="adm-detail-item"><span class="adm-detail-label">Ülke</span><span class="adm-detail-value">${v.country || '—'}</span></div>
-          <div class="adm-detail-item"><span class="adm-detail-label">ISP / Ağ</span><span class="adm-detail-value">${v.isp || '—'}</span></div>
           <div class="adm-detail-item"><span class="adm-detail-label">Cihaz</span><span class="adm-detail-value">${v.device || '—'}</span></div>
           <div class="adm-detail-item"><span class="adm-detail-label">Tarayıcı</span><span class="adm-detail-value">${v.browser || '—'}</span></div>
           <div class="adm-detail-item"><span class="adm-detail-label">İşletim Sistemi</span><span class="adm-detail-value">${v.os || '—'}</span></div>
@@ -1207,7 +1192,6 @@ function initBars(){
         </div>`;
         return `<div class="adm-visitor-row" onclick="toggleVisitorDetail('vd-${i}')" style="${accentStyle}">
           <span class="adm-visitor-ip" style="${accentStyle}">${v.ip}${isAdmin ? ' ★' : ''}</span>
-          <span class="adm-visitor-city">${cityStr}</span>
           <span class="adm-visitor-device">${devStr}</span>
           <span class="adm-visitor-time">${timeStr}</span>
         </div>${detail}`;
