@@ -1085,14 +1085,30 @@ function initBars(){
     return { device, deviceIcon, browser, browserIcon, os, osIcon };
   }
 
-  /* ── Konum tespiti ── */
-  async function getGeoInfo(ip){
-    try{
-      const r = await fetch(`https://ipwho.is/${ip}`);
-      const d = await r.json();
-      if(d && d.success) return { city: d.city||'—', country: d.country||'—', isp: (d.connection&&d.connection.isp)||'—' };
-    }catch(e){}
-    return { city: '—', country: '—', isp: '—' };
+  /* ── Konum tespiti — JSONP ile CORS yok ── */
+  function getGeoInfo(ip){
+    return new Promise(resolve => {
+      const empty = { city: '—', country: '—', isp: '—' };
+      if(!ip){ resolve(empty); return; }
+      const cbName = '_geo_' + Date.now();
+      const timeout = setTimeout(() => {
+        delete window[cbName];
+        resolve(empty);
+      }, 8000);
+      window[cbName] = function(d){
+        clearTimeout(timeout);
+        delete window[cbName];
+        if(d && d.status === 'success'){
+          resolve({ city: d.city||'—', country: d.country||'—', isp: d.isp||'—' });
+        } else {
+          resolve(empty);
+        }
+      };
+      const s = document.createElement('script');
+      s.onerror = () => { clearTimeout(timeout); delete window[cbName]; resolve(empty); };
+      s.src = `https://ip-api.com/json/${ip}?fields=status,city,country,isp&callback=${cbName}`;
+      document.head.appendChild(s);
+    });
   }
   async function getMyIP(){
     try{
