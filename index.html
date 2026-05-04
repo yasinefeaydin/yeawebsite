@@ -1190,11 +1190,24 @@ function initBars(){
     }catch(e){ console.warn('Ziyaret kaydedilemedi:', e); }
   }
 
+  /* ── Supabase'den toplam ziyaretçi sayısını çek ── */
+  async function fetchTotalVisitCount(){
+    try{
+      const r = await fetch(
+        SB_URL + '/rest/v1/visitors?select=id',
+        { headers: { ...HEADERS, 'Prefer': 'count=exact' } }
+      );
+      const total = r.headers.get('content-range');
+      if(total) return parseInt(total.split('/')[1]) || 0;
+      return 0;
+    }catch(e){ return 0; }
+  }
+
   /* ── Supabase'den ziyaretçileri çek ── */
   async function fetchVisitors(){
     try{
       const r = await fetch(
-        SB_URL + '/rest/v1/visitors?order=visited_at.desc&limit=50',
+        SB_URL + '/rest/v1/visitors?order=visited_at.desc&limit=500',
         { headers: HEADERS }
       );
       return await r.json();
@@ -1224,13 +1237,13 @@ function initBars(){
     });
 
     // Ziyaretçileri çek
-    const visitors = await fetchVisitors();
+    const [visitors, totalCount] = await Promise.all([fetchVisitors(), fetchTotalVisitCount()]);
 
     // İstatistikler
     const today = new Date().toISOString().slice(0,10);
     const todayCount = visitors.filter(v => v.visited_at && v.visited_at.startsWith(today)).length;
     document.getElementById('adm-today-visits').textContent = todayCount;
-    document.getElementById('adm-total-visits').textContent = visitors.length;
+    document.getElementById('adm-total-visits').textContent = totalCount || visitors.length;
     const last = visitors[0];
     document.getElementById('adm-last-visit').textContent = last
       ? new Date(last.visited_at).toLocaleString('tr-TR')
@@ -1310,12 +1323,12 @@ function initBars(){
     /* ── Ziyaretçileri 30 dakikada bir temizle ── */
   async function autoCleanVisitors(){
     try{
-      const threshold = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+      const threshold = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       await fetch(SB_URL + '/rest/v1/visitors?visited_at=lt.' + threshold, { method:'DELETE', headers: HEADERS });
     }catch(e){}
   }
   autoCleanVisitors();
-  setInterval(autoCleanVisitors, 30 * 60 * 1000);
+  setInterval(autoCleanVisitors, 24 * 60 * 60 * 1000);
 
   window.toggleVisitorDetail = function(id){
     const el = document.getElementById(id);
