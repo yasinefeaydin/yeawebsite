@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yasinefeaydin.github.io/yea/sitemap.xml
+Sitemap: https://yasinefeaydin.github.io/yeawebsite/sitemap.xml
