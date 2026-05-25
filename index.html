@@ -381,6 +381,12 @@ body,nav,.h-card,.stat-box,.skc,.proj-card,.ac,.c-link,.c-box,.soc-btn,.btn-p,.b
 .proj-desc{font-size:14px;color:var(--muted);line-height:1.85;font-weight:300;}
 .proj-bottom{padding:18px 34px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
 .tech{font-size:11px;color:var(--faint);background:var(--bg3);padding:5px 12px;border-radius:2px;border:1px solid var(--border);font-weight:500;}
+.proj-link{text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%;}
+.proj-link .proj-card{height:100%;}
+.proj-link:hover .proj-title{color:var(--accent);}
+.proj-cta{margin-left:auto;font-size:11px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
+.proj-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s;}
+.proj-link:hover .proj-cta svg{transform:translate(3px,-3px);}
 
 /* CONTACT */
 #contact-wrap{background:var(--bg2);border-top:1px solid var(--border);}
@@ -829,6 +835,48 @@ footer span{color:var(--accent);}
           <span class="tech">Envanter Yönetimi</span><span class="tech">Süreç Optimizasyonu</span>
         </div>
       </div>
+
+      <a class="proj-link" href="https://yasinefeaydin.github.io/warbandle/" target="_blank" rel="noopener noreferrer" aria-label="Warbandle projesini aç">
+        <div class="proj-card">
+          <div class="proj-top">
+            <div class="proj-tag">Web Oyunu &middot; Canlı</div>
+            <div class="proj-title">Warbandle</div>
+            <p class="proj-desc">Mount &amp; Blade: Warband evreninden karakterleri tahmin etmeye dayalı, Wordle esintili tarayıcı oyunu. Sıfırdan tasarlanan veri seti, ipucu sistemi ve karşılaştırma mantığıyla oyunculara her gün yeni bir bulmaca sunuyor.</p>
+          </div>
+          <div class="proj-bottom">
+            <span class="tech">HTML</span><span class="tech">CSS</span><span class="tech">JavaScript</span>
+            <span class="proj-cta">Ziyaret Et <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="proj-link" href="https://yasinefeaydin.github.io/hashcan/" target="_blank" rel="noopener noreferrer" aria-label="HashCan projesini aç">
+        <div class="proj-card">
+          <div class="proj-top">
+            <div class="proj-tag">Yapay Zeka &middot; Canlı</div>
+            <div class="proj-title">HashCan</div>
+            <p class="proj-desc">Kullanıcının girdiği herhangi bir konu için yapay zeka destekli, isabetli ve trend hashtag önerileri üreten web uygulaması. İçerik üreticilerin sosyal medya erişimini artırmaya yönelik pratik bir araç olarak tasarlandı.</p>
+          </div>
+          <div class="proj-bottom">
+            <span class="tech">HTML</span><span class="tech">CSS</span><span class="tech">JavaScript</span><span class="tech">AI API</span>
+            <span class="proj-cta">Ziyaret Et <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="proj-link" href="https://yasinefeaydin.github.io/randeme/" target="_blank" rel="noopener noreferrer" aria-label="Randeme projesini aç">
+        <div class="proj-card">
+          <div class="proj-top">
+            <div class="proj-tag">Eğlence &middot; Canlı</div>
+            <div class="proj-title">Randeme</div>
+            <p class="proj-desc">Türkçe komik meme'leri rastgele keşfetmek ve indirmek için tasarlanmış minimal bir web uygulaması. Hızlı yüklenen arayüzü ve sade gezinme deneyimiyle "tek tık eğlence" mantığı üzerine kurulu.</p>
+          </div>
+          <div class="proj-bottom">
+            <span class="tech">HTML</span><span class="tech">CSS</span><span class="tech">JavaScript</span>
+            <span class="proj-cta">Ziyaret Et <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </div>
+        </div>
+      </a>
 
       <div class="proj-card">
         <div class="proj-top">
@@ -1388,14 +1436,63 @@ function initBars(){
   };
 
   /* ── Ana kontrol ── */
+  // Ziyaret kaydı her zaman, admin paneli ise yalnızca gizli kısayol + şifre ile açılır.
+  let _myIPCached = null;
   getMyIP().then(async myIP => {
+    _myIPCached = myIP;
     try{ await recordVisit(myIP); }catch(e){ console.warn('recordVisit hatası:', e); }
+    // Eğer aynı oturumda admin daha önce şifreyi doğrulamışsa paneli geri yükle
     try{
-      if(myIP && myIP === ADMIN_IP){ loadAdminPanel(myIP); }
-    }catch(e){ console.warn('Admin panel hatası:', e); }
+      if(sessionStorage.getItem('adminAuth') === '1'){
+        loadAdminPanel(myIP);
+      }
+    }catch(e){ console.warn('Admin panel oturum yükleme hatası:', e); }
   }).catch(e=>{
     console.warn('getMyIP hatası:', e);
   });
+
+  /* ── Gizli kısayol: Ctrl + Shift + A → şifre sor ── */
+  const ADMIN_PASS = 'swioz132';
+
+  function promptAdminPassword(){
+    // Zaten açıksa hiçbir şey yapma
+    if(sessionStorage.getItem('adminAuth') === '1'){
+      // Paneli görünür yap (kapatılmış olabilir)
+      const bar   = document.getElementById('admin-bar');
+      const badge = document.getElementById('admin-badge');
+      if(bar)   bar.classList.add('visible');
+      if(badge) badge.style.display = 'block';
+      return;
+    }
+    const pass = window.prompt('🔒 Admin Şifresi:');
+    if(pass === null) return; // İptal
+    if(pass === ADMIN_PASS){
+      sessionStorage.setItem('adminAuth','1');
+      loadAdminPanel(_myIPCached);
+    } else {
+      alert('❌ Hatalı şifre.');
+    }
+  }
+
+  document.addEventListener('keydown', function(e){
+    // Ctrl + Shift + A  (Mac'te de Cmd + Shift + A çalışır)
+    if((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')){
+      e.preventDefault();
+      promptAdminPassword();
+    }
+  });
+
+  // Konsoldan da açmak için yardımcı (isteğe bağlı)
+  window.openAdmin = promptAdminPassword;
+
+  // Oturumu sonlandırma yardımcısı
+  window.logoutAdmin = function(){
+    sessionStorage.removeItem('adminAuth');
+    const bar   = document.getElementById('admin-bar');
+    const badge = document.getElementById('admin-badge');
+    if(bar){ bar.classList.remove('open'); bar.classList.remove('visible'); }
+    if(badge) badge.style.display = 'none';
+  };
 
 })();
 
