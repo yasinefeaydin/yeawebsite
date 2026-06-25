@@ -287,7 +287,7 @@ body,nav,.h-card,.stat-box,.skc,.proj-card,.ac,.c-link,.c-box,.soc-btn,.btn-p,.b
 /* HERO */
 #hero{min-height:100vh;display:flex;align-items:center;padding:130px 6% 90px;position:relative;overflow:hidden;}
 .h-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:70px 70px;opacity:.75;}
-.h-glow{position:absolute;top:12%;right:4%;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 68%);pointer-events:none;}
+.h-glow{position:absolute;top:8%;right:2%;width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(191,145,8,0.07) 0%,rgba(191,145,8,0.03) 40%,transparent 70%);pointer-events:none;}
 .h-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center;max-width:1280px;width:100%;margin:0 auto;}
 .h-tag{display:inline-block;background:var(--accent-glow);border:1px solid var(--accent-border);color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:7px 16px;border-radius:2px;margin-bottom:28px;}
 .h-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(68px,9vw,114px);line-height:.88;letter-spacing:.02em;color:var(--text);margin-bottom:26px;}
@@ -335,8 +335,12 @@ body,nav,.h-card,.stat-box,.skc,.proj-card,.ac,.c-link,.c-box,.soc-btn,.btn-p,.b
 .h-cname{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:.05em;color:var(--text);margin-bottom:6px;line-height:1;}
 .h-ctitle{font-size:15px;color:var(--accent);font-weight:500;margin-bottom:34px;}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.stat-box{background:var(--bg3);border-radius:4px;padding:22px 22px;border:1px solid var(--border);transition:border-color .22s,background .22s;}
-.stat-box:hover{border-color:var(--border-h);background:var(--bg4);}
+.stat-box{background:var(--bg3);border-radius:4px;padding:22px 22px;border:1px solid var(--border);transition:border-color .22s,background .22s,transform .22s;position:relative;overflow:hidden;}
+.stat-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;}
+.stat-box:hover{border-color:var(--accent-border);background:var(--bg4);transform:translateY(-2px);}
+.stat-box:hover::after{transform:scaleX(1);}
+.stat-ico{width:28px;height:28px;border-radius:6px;background:var(--accent-glow);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.stat-ico svg{width:13px;height:13px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .stat-n{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--accent);line-height:1;margin-bottom:6px;}
 .stat-n-sm{font-size:13px;font-weight:700;color:var(--accent);line-height:1.4;margin-bottom:5px;}
 .stat-l{font-size:12px;color:var(--muted);letter-spacing:.04em;line-height:1.5;}
@@ -355,16 +359,16 @@ body,nav,.h-card,.stat-box,.skc,.proj-card,.ac,.c-link,.c-box,.soc-btn,.btn-p,.b
 .about-text p{color:var(--muted);font-weight:300;font-size:16px;line-height:2;margin-bottom:22px;}
 .about-text p strong{color:var(--text);font-weight:600;}
 .about-cards{display:flex;flex-direction:column;gap:14px;}
-.ac{background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:4px;padding:24px 28px;transition:border-color .22s,background .22s,transform .22s;}
-.ac:hover{border-color:var(--border-h);border-left-color:var(--accent);background:var(--bg3);transform:translateX(7px);}
-.ac-title{font-weight:600;font-size:16px;color:var(--text);margin-bottom:5px;letter-spacing:.01em;}
-.ac-sub{font-size:13px;color:var(--muted);line-height:1.75;}
+.ac{background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:6px;padding:20px 24px;transition:border-color .22s,background .22s,transform .3s cubic-bezier(.22,1,.36,1),box-shadow .22s;}
+.ac:hover{border-color:var(--border-h);border-left-color:var(--accent);background:var(--bg3);transform:translateX(8px);box-shadow:4px 0 20px var(--accent-glow);}
+.ac-title{font-weight:600;font-size:15px;color:var(--text);margin-bottom:4px;letter-spacing:.01em;}
+.ac-sub{font-size:12px;color:var(--muted);line-height:1.8;}
 
 /* SKILLS */
 #skills-wrap{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;}
 .skc{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:28px 30px;cursor:none;transition:border-color .25s,background .25s,transform .25s,box-shadow .25s;}
-.skc:hover{border-color:var(--border-h);background:var(--bg4);transform:translateY(-6px);box-shadow:0 12px 36px var(--shadow);}
+.skc:hover{border-color:var(--accent-border);background:var(--bg4);transform:translateY(-6px);box-shadow:0 12px 36px var(--shadow),0 0 0 1px var(--accent-border),0 0 20px var(--accent-glow);}
 .sk-name{font-size:16px;font-weight:600;color:var(--text);margin-bottom:16px;letter-spacing:.01em;}
 .sk-bg{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:9px;}
 .sk-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));border-radius:2px;width:0;transition:width 1.3s cubic-bezier(.22,1,.36,1);}
@@ -373,7 +377,7 @@ body,nav,.h-card,.stat-box,.skc,.proj-card,.ac,.c-link,.c-box,.soc-btn,.btn-p,.b
 /* PROJECTS */
 .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;}
 .proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;cursor:none;transition:border-color .28s,transform .28s,box-shadow .28s;}
-.proj-card:hover{border-color:var(--border-h);transform:translateY(-7px);box-shadow:0 16px 46px var(--shadow);}
+.proj-card:hover{border-color:var(--accent-border);transform:translateY(-8px);box-shadow:0 20px 50px var(--shadow), 0 0 0 1px var(--accent-border);}
 .proj-top{padding:34px 34px 24px;flex:1;}
 .proj-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:var(--accent-glow);border-radius:2px;padding:4px 10px;margin-bottom:16px;}
 .proj-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;color:var(--text);margin-bottom:13px;line-height:1.1;}
@@ -415,8 +419,100 @@ footer{text-align:center;padding:32px 6%;border-top:1px solid var(--border);font
 footer span{color:var(--accent);}
 
 /* ANIMATIONS */
-.fi{opacity:0;transform:translateY(34px);transition:opacity .75s ease,transform .75s ease;}
+.fi{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
 .fi.v{opacity:1;transform:translateY(0);}
+
+/* Stagger children */
+.fi-stagger > *{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
+.fi-stagger.v > *:nth-child(1){opacity:1;transform:translateY(0);transition-delay:.0s;}
+.fi-stagger.v > *:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.12s;}
+.fi-stagger.v > *:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.22s;}
+.fi-stagger.v > *:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.32s;}
+.fi-stagger.v > *:nth-child(5){opacity:1;transform:translateY(0);transition-delay:.40s;}
+.fi-stagger.v > *:nth-child(6){opacity:1;transform:translateY(0);transition-delay:.48s;}
+.fi-stagger.v > *:nth-child(7){opacity:1;transform:translateY(0);transition-delay:.55s;}
+.fi-stagger.v > *:nth-child(8){opacity:1;transform:translateY(0);transition-delay:.62s;}
+
+/* Slide from left */
+.fi-left{opacity:0;transform:translateX(-40px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);}
+.fi-left.v{opacity:1;transform:translateX(0);}
+
+/* Slide from right */
+.fi-right{opacity:0;transform:translateX(36px);transition:opacity .7s ease,transform .7s ease;}
+.fi-right.v{opacity:1;transform:translateX(0);}
+
+
+
+/* Section title underline accent */
+.sec-title-wrap{position:relative;display:inline-block;margin-bottom:58px;}
+.sec-title-wrap .sec-title{margin-bottom:0;}
+.sec-title-wrap::after{
+  content:'';display:block;
+  width:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  margin-top:10px;border-radius:1px;
+  transition:width 1s cubic-bezier(.22,1,.36,1);
+}
+.sec-title-wrap.v::after{width:100%;}
+
+/* Skill card icon */
+.sk-icon{width:32px;height:32px;border-radius:6px;background:var(--accent-glow);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex-shrink:0;}
+.sk-icon svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Hero left col fade up with stagger */
+.h-left-in > *{opacity:0;transform:translateY(22px);}
+#site.on .h-left-in > *:nth-child(1){animation:fadeUpIn .6s ease .15s forwards;}
+#site.on .h-left-in > *:nth-child(2){animation:fadeUpIn .6s ease .28s forwards;}
+#site.on .h-left-in > *:nth-child(3){animation:fadeUpIn .6s ease .42s forwards;}
+#site.on .h-left-in > *:nth-child(4){animation:fadeUpIn .6s ease .56s forwards;}
+@keyframes fadeUpIn{to{opacity:1;transform:translateY(0);}}
+
+/* Hero card slide in */
+.h-card-in{opacity:0;transform:translateY(32px) scale(.97);}
+#site.on .h-card-in{animation:cardIn .75s cubic-bezier(.22,1,.36,1) .55s forwards;}
+@keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1);}}
+
+/* Active nav link highlight */
+.nav-links a.nav-active{color:var(--accent);background:var(--accent-glow);}
+.nav-links a.nav-active::after{width:calc(100% - 28px);}
+
+/* Subtle background noise texture on hero */
+.h-noise{position:absolute;inset:0;pointer-events:none;opacity:.022;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;}
+
+/* Scroll to top button */
+#scroll-top{
+  position:fixed;bottom:28px;right:28px;z-index:800;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--accent-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;opacity:0;transform:translateY(12px);
+  transition:opacity .3s,transform .3s,background .2s,border-color .2s,box-shadow .2s;
+  pointer-events:none;
+}
+#scroll-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+#scroll-top:hover{background:var(--accent);border-color:var(--accent);box-shadow:0 6px 20px var(--accent-glow);}
+#scroll-top:hover svg{stroke:#000;}
+#scroll-top svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s;}
+
+/* Proj card subtle left accent on hover */
+.proj-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--accent);border-radius:2px 0 0 2px;
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+.proj-card{position:relative;}
+.proj-card:hover::before{transform:scaleY(1);}
+
+/* contact link arrow pulse */
+.c-arr{transition:transform .22s;}
+.c-link:hover .c-arr{transform:translateX(5px);}
+
+/* footer link hover */
+footer a{color:var(--accent);text-decoration:none;transition:opacity .2s;}
+footer a:hover{opacity:.7;}
 
 /* ═══ ADMIN PANEL ═══ */
 #admin-bar{
@@ -701,10 +797,11 @@ footer span{color:var(--accent);}
 <!-- HERO -->
 <section id="hero" aria-label="Ana Sayfa - Efe AYDIN Portföy">
   <div class="h-grid"></div>
+  <div class="h-noise"></div>
   <div class="h-glow"></div>
   <div class="h-inner">
 
-    <div>
+    <div class="h-left-in">
       <div class="h-tag">Sosyal Medya Direktörü &middot; Dijital Strateji</div>
       <h1 class="h-name">Efe<span>AYDIN</span></h1>
       <p class="h-role">
@@ -718,23 +815,27 @@ footer span{color:var(--accent);}
     </div>
 
     <div>
-      <div class="h-card">
+      <div class="h-card h-card-in">
         <div class="h-cname">Efe AYDIN</div>
         <div class="h-ctitle">Sosyal Medya Direktörü &middot; Dijital Strateji</div>
         <div class="stat-grid">
           <div class="stat-box">
+            <div class="stat-ico"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
             <div class="stat-n">2+</div>
             <div class="stat-l">Yıl Deneyim</div>
           </div>
           <div class="stat-box">
+            <div class="stat-ico"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
             <div class="stat-n-sm">Deep Marine Services</div>
             <div class="stat-l">Sosyal Medya Direktörü<br>Aktif Pozisyon</div>
           </div>
           <div class="stat-box">
+            <div class="stat-ico"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
             <div class="stat-n-sm">İstanbul Üniversitesi</div>
             <div class="stat-l">Web Tasarım &amp; Kodlama<br>Açık Öğretim</div>
           </div>
           <div class="stat-box">
+            <div class="stat-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
             <div class="stat-n-sm">İstanbul</div>
             <div class="stat-l">Türkiye &middot; Remote &amp; Hibrit</div>
           </div>
@@ -751,17 +852,17 @@ footer span{color:var(--accent);}
 <!-- HAKKIMDA -->
 <div id="about" role="region" aria-label="Hakkımda">
   <div class="sw">
-    <div class="sec-label">01 &mdash; Hakkımda</div>
-    <div class="sec-title">Beni Tanıyın</div>
+    <div class="sec-label fi-left">01 &mdash; Hakkımda</div>
+    <div class="sec-title-wrap fi"><div class="sec-title">Beni Tanıyın</div></div>
     <div class="about-grid">
 
-      <div class="about-text fi">
+      <div class="about-text fi-left">
         <p>Merhaba, ben <strong>Efe AYDIN</strong>. İstanbul merkezli bir sosyal medya direktörüyüm. Şu an <strong>Deep Marine Services</strong>'te markanın dijital sesini yönetiyor; stratejik içerik planlaması ve sosyal medya yönetimi üzerine çalışıyorum.</p>
         <p>İş dünyasındaki yolculuğum <strong>Şahin Tasarım Ferforje</strong>'de stok yöneticisi olarak başladı. Bu deneyim bana süreçlere sistematik bakış açısı ve operasyonel disiplin kazandırdı. Zamanla dijital alana geçiş yaparak sosyal medya stratejisi konusunda uzmanlaştım.</p>
         <p><strong>İstanbul Üniversitesi</strong>'nde Web Tasarım &amp; Kodlama bölümünde açık öğretim yoluyla eğitimimi sürdürüyorum. Teknolojiyi ve yaratıcılığı bir araya getirerek güçlü dijital deneyimler oluşturmak en büyük motivasyonum.</p>
       </div>
 
-      <div class="about-cards fi">
+      <div class="about-cards fi-stagger">
         <div class="ac">
           <div class="ac-title">Deep Marine Services</div>
           <div class="ac-sub">Sosyal Medya Direktörü &middot; Güncel pozisyon<br>Dijital strateji, içerik yönetimi, marka iletişimi</div>
@@ -789,17 +890,17 @@ footer span{color:var(--accent);}
 <!-- YETENEKLERİM -->
 <div id="skills-wrap" role="region" aria-label="Yetenekler">
   <div class="sw">
-    <div class="sec-label">02 &mdash; Yeteneklerim</div>
-    <div class="sec-title">Ne Yapabilirim</div>
-    <div class="skills-grid fi">
-      <div class="skc"><div class="sk-name">Sosyal Medya Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="90"></div></div><div class="sk-lvl">Uzman &middot; Instagram, LinkedIn, Twitter/X</div></div>
-      <div class="skc"><div class="sk-name">Dijital Strateji</div><div class="sk-bg"><div class="sk-fill" data-w="85"></div></div><div class="sk-lvl">İleri Seviye &middot; İçerik &amp; Büyüme Stratejisi</div></div>
-      <div class="skc"><div class="sk-name">İçerik Üretimi</div><div class="sk-bg"><div class="sk-fill" data-w="88"></div></div><div class="sk-lvl">İleri Seviye &middot; Copywriting, Görsel Yön</div></div>
-      <div class="skc"><div class="sk-name">Analitik &amp; Raporlama</div><div class="sk-bg"><div class="sk-fill" data-w="75"></div></div><div class="sk-lvl">Orta-İleri &middot; Meta Insights, Analytics</div></div>
-      <div class="skc"><div class="sk-name">Stok &amp; Operasyon Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="80"></div></div><div class="sk-lvl">İleri Seviye &middot; Operasyonel Yönetim</div></div>
-      <div class="skc"><div class="sk-name">Web Tasarım</div><div class="sk-bg"><div class="sk-fill" data-w="60"></div></div><div class="sk-lvl">Gelişiyor &middot; HTML, CSS, UI/UX Temelleri</div></div>
-      <div class="skc"><div class="sk-name">Marka İletişimi</div><div class="sk-bg"><div class="sk-fill" data-w="85"></div></div><div class="sk-lvl">İleri Seviye &middot; Kurumsal İletişim</div></div>
-      <div class="skc"><div class="sk-name">Yaratıcı Kampanya Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="82"></div></div><div class="sk-lvl">İleri Seviye &middot; Kampanya Geliştirme</div></div>
+    <div class="sec-label fi-left">02 &mdash; Yeteneklerim</div>
+    <div class="sec-title-wrap fi"><div class="sec-title">Ne Yapabilirim</div></div>
+    <div class="skills-grid fi-stagger">
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div><div class="sk-name">Sosyal Medya Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="90"></div></div><div class="sk-lvl">Uzman &middot; Instagram, LinkedIn, Twitter/X</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="sk-name">Dijital Strateji</div><div class="sk-bg"><div class="sk-fill" data-w="85"></div></div><div class="sk-lvl">İleri Seviye &middot; İçerik &amp; Büyüme Stratejisi</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="sk-name">İçerik Üretimi</div><div class="sk-bg"><div class="sk-fill" data-w="93"></div></div><div class="sk-lvl">Uzman &middot; Copywriting, Video, Görsel Yön</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sk-name">Analitik &amp; Raporlama</div><div class="sk-bg"><div class="sk-fill" data-w="75"></div></div><div class="sk-lvl">Orta-İleri &middot; Meta Insights, Analytics</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div><div class="sk-name">Stok &amp; Operasyon Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="80"></div></div><div class="sk-lvl">İleri Seviye &middot; Operasyonel Yönetim</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="sk-name">Web Tasarım</div><div class="sk-bg"><div class="sk-fill" data-w="87"></div></div><div class="sk-lvl">İleri Seviye &middot; HTML, CSS, JavaScript, UI/UX</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="sk-name">Marka İletişimi</div><div class="sk-bg"><div class="sk-fill" data-w="85"></div></div><div class="sk-lvl">İleri Seviye &middot; Kurumsal İletişim</div></div>
+      <div class="skc"><div class="sk-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="sk-name">Yaratıcı Kampanya Yönetimi</div><div class="sk-bg"><div class="sk-fill" data-w="82"></div></div><div class="sk-lvl">İleri Seviye &middot; Kampanya Geliştirme</div></div>
     </div>
   </div>
 </div>
@@ -809,9 +910,9 @@ footer span{color:var(--accent);}
 <!-- PROJELERİM -->
 <div id="projects" role="region" aria-label="Projeler">
   <div class="sw">
-    <div class="sec-label">03 &mdash; Projelerim</div>
-    <div class="sec-title">Çalışmalarım</div>
-    <div class="proj-grid fi">
+    <div class="sec-label fi-left">03 &mdash; Projelerim</div>
+    <div class="sec-title-wrap fi"><div class="sec-title">Çalışmalarım</div></div>
+    <div class="proj-grid fi-stagger">
 
       <div class="proj-card">
         <div class="proj-top">
@@ -897,8 +998,8 @@ footer span{color:var(--accent);}
 <!-- İLETİŞİM -->
 <div id="contact-wrap" role="region" aria-label="İletişim">
   <div class="sw">
-    <div class="sec-label">04 &mdash; İletişim</div>
-    <div class="sec-title">Hadi Konuşalım</div>
+    <div class="sec-label fi-left">04 &mdash; İletişim</div>
+    <div class="sec-title-wrap fi"><div class="sec-title">Hadi Konuşalım</div></div>
     <div class="contact-grid">
 
       <div class="fi">
@@ -974,12 +1075,15 @@ footer span{color:var(--accent);}
 </div>
 
 <footer>
-  <p>&copy; 2025 <span>Efe AYDIN</span> &middot; İstanbul, Türkiye &middot; Tüm hakları saklıdır.</p>
+  <p>&copy; <span id="footer-year">2025</span> <span>Efe AYDIN</span> &middot; İstanbul, Türkiye &middot; Tüm hakları saklıdır.</p>
 </footer>
 
 </div><!-- #site -->
 
 <!-- ADMIN PANEL -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Yukarı Çık" aria-label="Sayfanın başına git">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 <div id="admin-badge">⬡ ADMİN</div>
 <div id="admin-bar">
   <div id="admin-tab" onclick="toggleAdminPanel()">
@@ -1129,11 +1233,16 @@ btn.addEventListener('click',()=>{
   localStorage.setItem('theme',next);
 });
 
-/* SCROLL FADE */
+/* SCROLL FADE — fi, fi-left, fi-right, fi-stagger, sec-title-wrap */
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');});
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('v');
+      obs.unobserve(e.target);
+    }
+  });
 },{threshold:.07});
-document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+document.querySelectorAll('.fi,.fi-left,.fi-right,.fi-stagger,.sec-title-wrap').forEach(el=>obs.observe(el));
 
 /* SKILL BARS */
 function initBars(){
@@ -1141,11 +1250,42 @@ function initBars(){
     entries.forEach(e=>{
       if(e.isIntersecting){
         e.target.querySelectorAll('.sk-fill').forEach(b=>{b.style.width=b.dataset.w+'%';});
+        bo.unobserve(e.target);
       }
     });
   },{threshold:.15});
   document.querySelectorAll('.skills-grid').forEach(g=>bo.observe(g));
 }
+
+/* FOOTER YEAR */
+(function(){ const el=document.getElementById('footer-year'); if(el) el.textContent=new Date().getFullYear(); })();
+
+/* SCROLL TO TOP */
+(function(){
+  const btn=document.getElementById('scroll-top');
+  if(!btn) return;
+  window.addEventListener('scroll',()=>{ btn.classList.toggle('show', window.scrollY>400); },{passive:true});
+})();
+
+/* NAV ACTIVE LINK */
+(function(){
+  const sections=['hero','about','skills-wrap','projects','contact-wrap'];
+  const links=document.querySelectorAll('.nav-links a');
+  const sectEls=sections.map(id=>document.getElementById(id)).filter(Boolean);
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(a=>a.classList.remove('nav-active'));
+        const id=e.target.id;
+        const active=document.querySelector('.nav-links a[href="#'+id+'"]');
+        if(active) active.classList.add('nav-active');
+      }
+    });
+  },{rootMargin:'-40% 0px -55% 0px'});
+  sectEls.forEach(s=>io.observe(s));
+})();
+
+
 
 /* ═══ ADMIN PANEL — SUPABASE ═══ */
 (function(){
